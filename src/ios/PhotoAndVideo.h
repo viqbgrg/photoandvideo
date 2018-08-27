@@ -1,5 +1,5 @@
 //
-//  photoandvideo.h
+//  PhotoAndVideo.h
 //  test5
 //
 //  Created by Embrace on 2017/6/1.
@@ -11,7 +11,7 @@
 #import <Cordova/CDVPlugin.h>
 #import "RCMediaViewController.h"
 
-@interface photoandvideo : CDVPlugin
+@interface PhotoAndVideo : CDVPlugin
 -(void) takePhotoOrVideoMethod:(CDVInvokedUrlCommand *)command;
 -(void) capturedImageOrVideoWithPath:(NSString*)GetPath;
 @property (strong, nonatomic) CDVInvokedUrlCommand* latestCommand;
