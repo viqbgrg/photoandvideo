@@ -6,7 +6,7 @@
 //  Copyright © 2017年 Roy CHANG. All rights reserved.
 //
 
-#import "photoandvideo.h"
+#import "PhotoAndVideo.h"
 #import "RCMediaViewController.h"
 #import "RCMediaCaptureView.h"
 
@@ -19,11 +19,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     _captureView = [[RCMediaCaptureView alloc] initWithFrame:self.view.bounds];
     _captureView.captureDelegate = (id<RCMediaCaptureViewDelegate>)self;
     [self.view addSubview:_captureView];
-
+    
     [_captureView rc_startCapture];
 }
 
@@ -35,7 +35,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    
     //[self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
@@ -47,7 +47,7 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-
+    
     if(self.isMovingFromParentViewController)
     {
         [_captureView rc_stopCaptture];
@@ -68,17 +68,17 @@
         NSURL *url = [info valueForKey:@"mediainfo_video"];
         PathString = url.absoluteString;
     }
-
+    
     [self.plugin capturedImageOrVideoWithPath:PathString];
-
+    
     if([_mediaDelegate respondsToSelector:@selector(rc_mediaController:didFinishPickingMediaWithInfo:)])
     {
         [_mediaDelegate rc_mediaController:self didFinishPickingMediaWithInfo:info];
-
+       
        // NSLog(@"info :r%@",info);
-
+        
     }
-
+    
  [self.plugin dismissCamera];
 }
 
@@ -88,7 +88,7 @@
     {
         [_mediaDelegate rc_mediaControlelrDidCancel:self];
     }
-
+    
      [self.plugin dismissCamera];
 }
 
@@ -108,7 +108,7 @@
 
 {
     return UIInterfaceOrientationMaskPortrait;
-
+    
 }
 
 @end

@@ -10,7 +10,7 @@
 #import "RCMediaCaptureView.h"
 @class RCMediaViewController;
 @class CustomVideo;
-@class photoandvideo;
+@class PhotoAndVideo;
 ///image instance
 FOUNDATION_EXTERN NSString *const RCMediaImageInfo;
 ///NSURL instance
@@ -29,6 +29,6 @@ FOUNDATION_EXTERN NSString *const RCMediaVideoInfo;
 
 @property (nonatomic, weak) id<RCMediaViewControllerDelegate> mediaDelegate;
 @property (nonatomic, strong) RCMediaCaptureView *captureView;
-@property (strong, nonatomic) photoandvideo* plugin;
+@property (strong, nonatomic) PhotoAndVideo* plugin;
 
 @end

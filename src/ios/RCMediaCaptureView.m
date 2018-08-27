@@ -528,7 +528,31 @@ NS_INLINE CGFloat rc_degressToRadians(CGFloat degress)
                  kCMAttachmentMode_ShouldPropagate);//*/
                 NSData *jpgData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
                 UIImage *image = [UIImage imageWithData:jpgData];
-                image = [image rc_imageRotatedByDegress:90];
+                long optionInt = (long)[UIDevice currentDevice].orientation;
+                
+                int   opInt = (int)optionInt;
+                
+                if (opInt == 1) {
+                    image = [image rc_imageRotatedByDegress:90];
+                    
+                    
+                }
+                
+                if (opInt == 2) {
+                    image = [image rc_imageRotatedByDegress:270];
+                    
+                    
+                }
+                if (opInt == 3) {
+                    image = [image rc_imageRotatedByDegress:360];
+                    
+                    
+                }
+                if (opInt == 4) {
+                    image = [image rc_imageRotatedByDegress:-180];
+                    
+                    
+                }
                 
                 [_toolbar rc_endWithMediaOperation:operation];
                 
