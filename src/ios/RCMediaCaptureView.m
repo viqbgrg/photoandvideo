@@ -9,11 +9,15 @@
 #import "RCMediaCaptureView.h"
 #import <AVFoundation/AVFoundation.h>
 #import "RCMediaFocusView.h"
-#import "RCMediaToolbar.h"
 #import "RCMediaConstant.h"
-#import "RCMediaPreview.h"
-#import "RCSimpleHUD.h"
 
+#import "RCSimpleHUD.h"
+#import "Masonry.h"
+
+//screen size
+#define kScreenSize UIScreen.mainScreen.bounds.size
+#define kScreenWidth UIScreen.mainScreen.bounds.size.width
+#define kScreenHeight UIScreen.mainScreen.bounds.size.height
 const CGFloat g_Custom_MaxScaleAndCropFactor = 10.f;
 
 typedef NS_ENUM(NSInteger, RCExportMP4Status)
@@ -59,7 +63,7 @@ NS_INLINE CGFloat rc_degressToRadians(CGFloat degress)
     
     RCMediaFocusView *_focusView;
     RCMediaToolbar *_toolbar;
-    RCMediaPreview *_preview;
+    
     
     UIButton *_switchPosition;
     UIButton *_torch;
@@ -90,6 +94,7 @@ NS_INLINE CGFloat rc_degressToRadians(CGFloat degress)
         [self rc_captureConfigure];
         [self rc_otherConfigure];
         [self rc_addNotifications];
+        [self setupShowImgView];
     }
     
     return self;
@@ -101,6 +106,21 @@ NS_INLINE CGFloat rc_degressToRadians(CGFloat degress)
     
     NSLog(@"\n%s", __func__);
 }
+
+-(void)setupShowImgView {
+    _showImgView = [[UIImageView alloc] init];
+    [self addSubview:_showImgView];
+    [_showImgView setBackgroundColor:[UIColor clearColor]];
+    [_showImgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self);
+        make.left.equalTo(self);
+        make.width.equalTo(@(kScreenWidth));
+        make.height.equalTo(@(kScreenHeight));
+    }];
+    
+    //    [_showImgView setHidden:YES];
+}
+
 
 /*
  // Only override drawRect: if you perform custom drawing.
@@ -131,7 +151,7 @@ NS_INLINE CGFloat rc_degressToRadians(CGFloat degress)
     [self addSubview:_focusView];
     
     _switchPosition = [UIButton buttonWithType:UIButtonTypeSystem];
-    _switchPosition.frame = CGRectMake(w - 60 - 10, 20, 60, 40);
+    //   _switchPosition.frame = CGRectMake(w - 60 - 10, 20, 60, 40);
     _switchPosition.tintColor = [UIColor whiteColor];
     _switchPosition.layer.cornerRadius = 8.0f;
     _switchPosition.layer.borderColor = [[UIColor whiteColor] CGColor];
@@ -141,8 +161,16 @@ NS_INLINE CGFloat rc_degressToRadians(CGFloat degress)
     [_switchPosition addTarget:self action:@selector(rc_switchPositionCameraEvent:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_switchPosition];
     
+    [_switchPosition mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self).offset(22);
+        make.right.equalTo(self).offset(-15);
+        make.width.equalTo(@60);
+        make.height.equalTo(@40);
+        
+    }];
+    
     _torch = [UIButton buttonWithType:UIButtonTypeSystem];
-    _torch.frame = CGRectMake(w - 60 - 10, 70, 60, 40);
+    //   _torch.frame = CGRectMake(w - 60 - 10, 70, 60, 40);
     _torch.tintColor = [UIColor whiteColor];
     _torch.layer.cornerRadius = 8.0f;
     _torch.layer.borderColor = [[UIColor whiteColor] CGColor];
@@ -153,6 +181,15 @@ NS_INLINE CGFloat rc_degressToRadians(CGFloat degress)
     [_torch addTarget:self action:@selector(rc_torchEvent:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_torch];
     
+    
+    [_torch mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self).offset(70);
+        make.right.equalTo(self).offset(-15);
+        make.width.equalTo(@60);
+        make.height.equalTo(@40);
+        
+    }];
+    
     //        _exportMP4 = [[UISwitch alloc] initWithFrame:CGRectMake(w - 60 - 10, 120, 60, 40)];
     //        [self addSubview:_exportMP4];
     //        UILabel *_exportLabel = [[UILabel alloc] initWithFrame:CGRectMake(w - 60 - 10, CGRectGetMaxY(_exportMP4.frame) + 5, 60, 20)];
@@ -162,7 +199,8 @@ NS_INLINE CGFloat rc_degressToRadians(CGFloat degress)
     //        _exportLabel.text = @"转换MP4";
     //    [self addSubview:_exportLabel];
     
-    _preview = [[RCMediaPreview alloc] initWithFrame:self.bounds];
+    //    _preview = [[RCMediaPreview alloc] initWithFrame:self.bounds];
+    _preview = [[RCMediaPreview alloc] initWithFrame:self.frame];
     _preview.hidden = YES;
     [self addSubview:_preview];
     
@@ -248,9 +286,10 @@ NS_INLINE CGFloat rc_degressToRadians(CGFloat degress)
     }
     
     _captureLayer = [AVCaptureVideoPreviewLayer layerWithSession:_session];
-    _captureLayer.frame = self.bounds;
-    _captureLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+    _captureLayer.frame = _showImgView.frame;
+    _captureLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     [self.layer addSublayer:_captureLayer];
+    
     
     
     //tap for focus and pin for scale

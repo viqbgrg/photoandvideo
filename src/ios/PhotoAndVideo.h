@@ -12,7 +12,10 @@
 #import "RCMediaViewController.h"
 
 @interface PhotoAndVideo : CDVPlugin
--(void) takePhotoOrVideoMethod:(CDVInvokedUrlCommand *)command;
+-(void) getVideosAndImage:(CDVInvokedUrlCommand *)command;
+-(void) getImage:(CDVInvokedUrlCommand *)command;
+-(void) getVideos:(CDVInvokedUrlCommand *)command;
+
 -(void) capturedImageOrVideoWithPath:(NSString*)GetPath;
 @property (strong, nonatomic) CDVInvokedUrlCommand* latestCommand;
 @property (readwrite, assign) BOOL hasPendingOperation;

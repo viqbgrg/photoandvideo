@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import <AVFoundation/AVFoundation.h>
 ///media data type enum
 typedef NS_ENUM(NSInteger, RCMediaType)
 {
@@ -28,8 +28,11 @@ typedef NS_ENUM(NSInteger, RCMediaType)
 @interface RCMediaPreview : UIView
 
 @property (nonatomic, readonly) RCMediaInfo *mediaInfo;
-
 - (void)rc_previewWithMediaInfo:(RCMediaInfo *)mediaInfo;
+@property (nonatomic, strong) AVPlayer *prePlayer;
+@property (nonatomic, strong) AVCaptureVideoPreviewLayer  * previewLayer;
+@property (nonatomic, strong)AVPlayerLayer *preLayer;
+@property (nonatomic, strong) UIView *showVideoView;
 
 - (void)rc_endPreview;
 

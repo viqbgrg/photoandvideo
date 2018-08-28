@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Masonry.h"
 #import "RCMediaCaptureView.h"
 @class RCMediaViewController;
-@class CustomVideo;
+
 @class PhotoAndVideo;
 ///image instance
 FOUNDATION_EXTERN NSString *const RCMediaImageInfo;
@@ -30,5 +31,5 @@ FOUNDATION_EXTERN NSString *const RCMediaVideoInfo;
 @property (nonatomic, weak) id<RCMediaViewControllerDelegate> mediaDelegate;
 @property (nonatomic, strong) RCMediaCaptureView *captureView;
 @property (strong, nonatomic) PhotoAndVideo* plugin;
-
+@property (nonatomic, strong) NSString *actiStr;
 @end

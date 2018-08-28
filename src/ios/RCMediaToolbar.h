@@ -61,7 +61,8 @@ typedef NS_ENUM(NSInteger, RCToolbarActionType)
 
 ///最后一次操作
 @property (nonatomic, readonly) RCMediaOperation lastOperation;
-
+@property (nonatomic, strong)  UIView *mediaBtn;
+@property (nonatomic, strong) NSString *acStr;
 ///根据动作类型获取触发该动作的视图
 - (void)rc_viewWithActionType:(RCToolbarActionType)type configureBlock:(void (^)(UIView *view))block;
 

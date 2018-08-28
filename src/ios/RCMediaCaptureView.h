@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-@class CustomVideo;
+#import "RCMediaToolbar.h"
+#import "RCMediaPreview.h"
+#import <AVFoundation/AVFoundation.h>
 @class RCMediaCaptureView;
 #ifdef NSFoundationVersionNumber_iOS_7_1
 #define RC_iOS_7_Max    NSFoundationVersionNumber_iOS_7_1
@@ -21,9 +23,6 @@
 
 - (void)rc_captureViewDidCancel:(RCMediaCaptureView *)capture;
 
-//- (void)rc_captureViewPassImg:(UIImage *)getImg;
-//- (void)rc_captureViewPassVideoPath:(NSString *)getPath;
-
 @end
 typedef void(^PaseImageBlock)(UIImage *imgData);
 NS_AVAILABLE_IOS(7_0)
@@ -36,7 +35,10 @@ NS_AVAILABLE_IOS(7_0)
 
 @property (nonatomic, copy) PaseImageBlock paseImageBlock;
 @property (nonatomic, copy) NSString *videoP;
-@property (strong, nonatomic) CustomVideo* plugin;
+@property (nonatomic, strong) AVCaptureVideoPreviewLayer *captureLayer;
+@property (nonatomic, strong) UIImageView *showImgView;
+@property (nonatomic, strong) RCMediaToolbar *toolbar;
+@property (nonatomic, strong) RCMediaPreview *preview;
 
 -(void)paseImageBlock:(PaseImageBlock)block;
 

@@ -7,17 +7,21 @@
 //
 
 #import "RCMediaPreview.h"
-#import <AVFoundation/AVFoundation.h>
+#import "Masonry.h"
+#define kScreenSize UIScreen.mainScreen.bounds.size
+#define kScreenWidth UIScreen.mainScreen.bounds.size.width
+#define kScreenHeight UIScreen.mainScreen.bounds.size.height
+//#import <AVFoundation/AVFoundation.h>
 
 NSString *const RCMeidaPlayStatus = @"status";
 
 @interface RCMediaPreview ()
 {
 @private
-    AVPlayer *_prePlayer;
+    //    AVPlayer *_prePlayer;
     AVPlayerItem *_preItem;
-    AVPlayerLayer *_preLayer;
-    AVCaptureVideoPreviewLayer  * previewLayer;
+    //    AVPlayerLayer *_preLayer;
+    
 }
 
 @end
@@ -31,6 +35,30 @@ NSString *const RCMeidaPlayStatus = @"status";
  // Drawing code
  }
  */
+-(instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        
+        [self setupShowVideoView];
+    }
+    return self;
+    
+}
+
+-(void)setupShowVideoView {
+    _showVideoView = [[UIView alloc] init];
+    [self addSubview:_showVideoView];
+    [_showVideoView setBackgroundColor:[UIColor clearColor]];
+    [_showVideoView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self);
+        make.left.equalTo(self);
+        make.width.equalTo(@(kScreenWidth));
+        make.height.equalTo(@(kScreenHeight));
+    }];
+    
+    //    [_showImgView setHidden:YES];
+}
+
 
 
 #pragma mark - public method
@@ -59,15 +87,15 @@ NSString *const RCMeidaPlayStatus = @"status";
                 //                self.layer.contents = (id)[((UIImage*)_mediaInfo.mediaData) CGImage];
                 //                self.hidden = NO;
                 
-                previewLayer = [[AVCaptureVideoPreviewLayer alloc]init];
-                previewLayer.contents= (id)[((UIImage*)_mediaInfo.mediaData) CGImage];
+                self.previewLayer = [[AVCaptureVideoPreviewLayer alloc]init];
+                self.previewLayer.contents= (id)[((UIImage*)_mediaInfo.mediaData) CGImage];
                 [ self.layer setMasksToBounds:YES];
                 
                 CGRect bounds = [self bounds];
-                [previewLayer setFrame:bounds];
-                [previewLayer setVideoGravity:AVLayerVideoGravityResizeAspect];
+                //                [previewLayer setFrame:bounds];
+                [self.previewLayer setVideoGravity:AVLayerVideoGravityResizeAspect];
                 
-                [self.layer insertSublayer:previewLayer below:[[self.layer sublayers] objectAtIndex:0]];
+                [self.layer insertSublayer:self.previewLayer below:[[self.layer sublayers] objectAtIndex:0]];
                 
                 
             }
@@ -78,13 +106,36 @@ NSString *const RCMeidaPlayStatus = @"status";
         {
             if([_mediaInfo.mediaData isKindOfClass:[NSURL class]])
             {
+                
                 _preItem = [AVPlayerItem playerItemWithURL:_mediaInfo.mediaData];
                 _prePlayer = [AVPlayer playerWithPlayerItem:_preItem];
                 _preLayer = [AVPlayerLayer playerLayerWithPlayer:_prePlayer];
-                _preLayer.frame = self.bounds;
-                _preLayer.videoGravity = AVLayerVideoGravityResizeAspect;
+                _preLayer.frame = _showVideoView.frame;
+                _preLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
                 [self.layer addSublayer:_preLayer];
+                
+                //                [ self.layer setMasksToBounds:YES];
+                
+                
+                
+                //                CGRect bounds = [self bounds];
+                //                [_preLayer setFrame:bounds];
+                //                [_preLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
+                //
+                //                [self.layer insertSublayer:_preLayer below:[[self.layer sublayers] objectAtIndex:0]];
+                
+                
                 [self rc_addKVOAndNotifications];
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
             }
         }
             break;
